@@ -1,8 +1,12 @@
 import React from 'react'
+import {useState} from 'react'
 
 function Card() {
+    const [AbrirCarta, setAbrirCarta] = useState(false);
+    const showAbrirCarta = () => setAbrirCarta(!AbrirCarta);
     return (
-        <main className="flex">
+        <main className={AbrirCarta ? 'flex active' : 'flex'}>
+            <p title="Cerrar" className="x" onClick={showAbrirCarta}>&times;</p>
             <article className="card">
                 <img src="https://static.vecteezy.com/system/resources/thumbnails/002/960/590/small/abstract-watercolor-texture-wallpaper-background-free-vector.jpg" alt="fondo" className="fondo-card"/>
 

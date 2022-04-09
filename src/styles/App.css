@@ -4,24 +4,23 @@
 
 .App-header {
   background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.cardInvisible{
-  visibility: collapse;
 }
 
 .flex{
+  left: 35%;
+  top: 25%;
+  position: fixed;
+  justify-content: center;
   background-color: rgb(255, 255, 255);
-  display: flex;
   border-radius: 20px;
-
+}
+.flex.active {
+  visibility: hidden;
+  transition: 0.5s ease;
+}
+.flex:hover{
+  transition:  0.2s ease;
+  box-shadow: 0 0.1em 2rem rgba(0, 0, 0, .95);
 }
 .fondo-card{
   width: 100%;
@@ -71,4 +70,52 @@
   display: flex;
   -ms-flex-pack: distribute;
   justify-content: space-around;
+}
+
+.flexTabla{
+  margin: 20px;
+  background-image: url("https://static.vecteezy.com/system/resources/thumbnails/002/960/590/small/abstract-watercolor-texture-wallpaper-background-free-vector.jpg") ;
+  border-radius: 20px;
+  width: 220px;
+  height: 200px;
+  display: inline-block;
+  align-items: center;
+}
+.flexTabla:hover{
+  cursor: pointer;
+  transition:  0.2s ease;
+  box-shadow: 0 0.1em 2rem rgba(0, 0, 0, .95);
+}
+.imagenPokemonTabla{
+  width: 140px;
+  height: 140px;
+  margin-top: 5px;
+}
+.card-nombre-pokemonTabla{
+  font-size: 25px;
+  color: #000000;
+  font-weight: bold;
+  text-transform: capitalize;
+  margin-top: -20px;
+}
+.id{
+  margin-top: -5px;
+  color: #525252;
+  font-size: 15px;
+}
+.x{
+  position: absolute;
+  margin-right: 5px;
+  margin-left: 360px;
+  margin-top: 1px;
+  font-size: 30px;
+  font-style: bold;
+  color: black;
+  -webkit-text-stroke: 0.5px black;
+  cursor: pointer;
+  
+}
+.x:hover{
+  color: #ffffff;
+  transition: 0.2s ease;
 }

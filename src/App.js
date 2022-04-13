@@ -1,76 +1,96 @@
 import './styles/App.css';
 import React from 'react';
 import Card from './components/Card';
-import TablaPokemons from './components/TablaPokemon';
+import {useEffect,useState} from 'react';
+import { Row } from 'react-bootstrap';
+import TablaPokemon from './components/TablaPokemon';
 
 
 function App() {
+
+  const [pokemonEstado, setPokemonEstdo] = useState([]);
+  const [pokemonSeleccionadoEstado, setPokemonSeleccionadoEstado] = useState(pokemonEstado);
+  const [loading, setLoading] = useState(true)
+  const [loadingCard, setLoadingCard] = useState(true)
+  const [AbrirCarta, setAbrirCarta] = useState(false);
+  const showAbrirCarta = () => setAbrirCarta(!AbrirCarta);
+
+
+  const getPokemonList = async () => {
+  let pokemonArray = [];
+  for(let i = 1; i <= 151; i ++){
+    pokemonArray.push(await getPokemonData(i));
+  }
+  setPokemonEstdo(pokemonArray);
+  setLoading(false);
+  console.log(pokemonArray);
+  // const fs = require('fs');
+  // const jsonContent = JSON.stringify(pokemonArray);
+  // fs.writeFile("./pokedex.json", jsonContent, 'utf8', function (err) {
+  //   if (err) {
+  //     return console.log(err);
+  //   }
+  //   console.log("The file was saved!");
+  // }); 
+}
+  const handleUpdate = (id) => {
+    const pokemonSeleccionadoEstado = pokemonEstado.filter((pokemon) => pokemon.id === id);
+    setPokemonSeleccionadoEstado(pokemonSeleccionadoEstado);
+    setLoadingCard(false);
+    showAbrirCarta();
+  }
+
+  const getPokemonData = async (id) => {
+    try {
+      const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
+      const data = await response.json();
+      return data;
+    }
+    catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    getPokemonList();
+  }, []);
   return (
     <div className="App">
       <header className="App-header">
-        <TablaPokemons/>
-        <TablaPokemons/>
-        <TablaPokemons/>
-        <Card/>
+      {loading ? ( <h1 id="loading">Cargando...</h1>
+      ) : (
+        <>
+          {loadingCard ? ( ''
+      ) : (
+          <Card
+            className={!AbrirCarta ? 'flex active' : 'flex'}
+            showAbrirCarta={showAbrirCarta}
+            img={pokemonSeleccionadoEstado[0].sprites.other.dream_world.front_default}
+            name={pokemonSeleccionadoEstado[0].name}
+            hp={pokemonSeleccionadoEstado[0].stats[0].base_stat}
+            experiencia={pokemonSeleccionadoEstado[0].base_experience}
+            ataque={pokemonSeleccionadoEstado[0].stats[1].base_stat}
+            defensa={pokemonSeleccionadoEstado[0].stats[2].base_stat}
+            especial={pokemonSeleccionadoEstado[0].stats[3].base_stat}
+          />
+          )}
+          <Row>
+            {pokemonEstado.map( data =>(
+              <TablaPokemon 
+              onClick={() => handleUpdate(data.id)}
+              key={data.id}
+              id={data.id}
+              name={data.name}
+              img={data.sprites.other.dream_world.front_default}
+              />
+            ))}
+          </Row>
+        </>
+      )}
       </header>
     </div>
   );
 }
 
-const getRandomPokemon = () => {
-  return Math.floor(Math.random() * 301) + 1;
-}
-document.addEventListener('DOMContentLoaded', () => {
-  fetchPokemon();
-  fetchPokemons();
-});
-
-const fetchPokemons = () => {
-  for(let i = 0; i <= 30; i++) {
-    fetchPokemon()
-  }
-}
-
-
-const fetchPokemon = async () => {
-  try {
-    const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${getRandomPokemon()}`);
-    const data = await response.json();
-    const pokemon = {
-      id: data.id,
-      img: data.sprites.other.dream_world.front_default,
-      nombre: data.name,
-      hp: data.stats[0].base_stat,
-      experiencia: data.base_experience,
-      ataque: data.stats[1].base_stat,
-      especial: data.stats[3].base_stat,
-      defensa: data.stats[2].base_stat,
-    }
-    pintarCard(pokemon);
-    pintarMiniCard(pokemon);
-  }
-  catch (error) {
-    console.log(error);
-  }
-}
-
-const pintarMiniCard = (pokemon) => {
-  const flex = document.querySelector('.flexTabla')
-  const clon = flex.cloneNode(true);
-  clon.querySelector('.imagenPokemonTabla').setAttribute('src', pokemon.img);
-  clon.querySelector('.card-nombre-pokemonTabla').innerHTML = `${pokemon.nombre}`
-  clon.querySelector('.id').innerHTML = `#${pokemon.id}`;
-  flex.parentNode.appendChild(clon);
-}
-
-const pintarCard = (pokemon) => {
-  const flex = document.querySelector('.flex')
-  flex.querySelector('.imagenPokemon').setAttribute('src', pokemon.img);
-  flex.querySelector('.card-nombre-pokemon').innerHTML = `${pokemon.nombre}  <span>${pokemon.hp}Hp</span>`;
-  flex.querySelector('.card-pokemon-text').innerHTML = `${pokemon.experiencia} Exp`;
-  flex.querySelector('.ataque').innerHTML = `${pokemon.experiencia} K`;
-  flex.querySelector('.especial').innerHTML = `${pokemon.especial} K`;
-  flex.querySelector('.defensa').innerHTML = `${pokemon.defensa} K`;
-}
 
 export default App;

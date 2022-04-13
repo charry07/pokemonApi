@@ -1,14 +1,14 @@
 import React from 'react'
 
 
-function TablaPokemons() {
+function TablaPokemons(props) {
     return (
-        <main className="flexTabla">
+        <main className="flexTabla"  onClick={props.onClick}  >
             <div className="cardTabla">
-                <img src="" alt="imagenPokemon" className="imagenPokemonTabla"/>
-                <p className="id">#</p>
+                <img src={props.img} alt="imagenPokemon" className="imagenPokemonTabla"/>
+                <p className="id">#{props.id}</p>
                 <h1 className="card-nombre-pokemonTabla">
-                    Charry
+                    {props.name}
                 </h1>
             </div>
         </main>

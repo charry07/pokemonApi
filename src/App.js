@@ -33,8 +33,8 @@ function App() {
 
   const next  = async () => {
     let incremento = pagina +1;
-    let inicio = pagina*20
-    let fin = (pagina*20)+20
+    let inicio = pagina*10
+    let fin = (pagina*10)+11
     getPokemonList(inicio,fin);
     setPagina(incremento)
     console.log('next' ,  incremento);
@@ -42,8 +42,8 @@ function App() {
 
   const previous = async () => {
     let decremento = pagina -1;
-    let inicio = (decremento*20)-19
-    let fin = (decremento*20);
+    let inicio = (decremento*10)-9
+    let fin = (decremento*10);
     if(inicio > 0){
       getPokemonList(inicio,fin);
       setPagina(decremento)
@@ -70,7 +70,7 @@ function App() {
   }
   
   useEffect(() => {
-    getPokemonList(1,20);
+    getPokemonList(1,10);
   }, []);
   return (
     <div className="App">

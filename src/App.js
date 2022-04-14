@@ -34,7 +34,7 @@ function App() {
   const next  = async () => {
     let incremento = pagina +1;
     let inicio = pagina*10
-    let fin = (pagina*10)+11
+    let fin = (pagina*10)+10
     getPokemonList(inicio,fin);
     setPagina(incremento)
     console.log('next' ,  incremento);

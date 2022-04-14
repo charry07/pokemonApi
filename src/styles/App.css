@@ -1,9 +1,13 @@
 .App {
   text-align: center;
+  background-color: #282c34;
 }
-
 .App-header {
   background-color: #282c34;
+}
+body{
+  background-color: #282c34;
+  width: 100%;
 }
 
 .flex{
@@ -133,4 +137,13 @@
 }
 .TablaPokemonMap{
   z-index: 100;
+}
+.pagination {
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 50px;
+}
+.pagina{
+  color: #ffffff;
 }

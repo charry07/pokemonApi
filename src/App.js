@@ -4,35 +4,53 @@ import Card from './components/Card';
 import {useEffect,useState} from 'react';
 import { Row } from 'react-bootstrap';
 import TablaPokemon from './components/TablaPokemon';
+import Pagination from './components/Pagination';
+
+
 
 
 function App() {
 
-  const [pokemonEstado, setPokemonEstdo] = useState([]);
+  const [pokemonEstado, setPokemonEstado] = useState([]);
   const [pokemonSeleccionadoEstado, setPokemonSeleccionadoEstado] = useState(pokemonEstado);
   const [loading, setLoading] = useState(true)
   const [loadingCard, setLoadingCard] = useState(true)
   const [AbrirCarta, setAbrirCarta] = useState(false);
   const showAbrirCarta = () => setAbrirCarta(!AbrirCarta);
+  const [pagina,setPagina] = useState(1);
+
+  
 
 
-  const getPokemonList = async () => {
-  let pokemonArray = [];
-  for(let i = 1; i <= 151; i ++){
-    pokemonArray.push(await getPokemonData(i));
+  const getPokemonList = async (min,max) => {
+    let pokemonArray = [];
+    for(let i = min; i <= max; i ++){
+      pokemonArray.push(await getPokemonData(i));
+    }
+    setPokemonEstado(pokemonArray);
+    setLoading(false);
   }
-  setPokemonEstdo(pokemonArray);
-  setLoading(false);
-  console.log(pokemonArray);
-  // const fs = require('fs');
-  // const jsonContent = JSON.stringify(pokemonArray);
-  // fs.writeFile("./pokedex.json", jsonContent, 'utf8', function (err) {
-  //   if (err) {
-  //     return console.log(err);
-  //   }
-  //   console.log("The file was saved!");
-  // }); 
-}
+
+  const next  = async () => {
+    let incremento = pagina +1;
+    let inicio = pagina*20
+    let fin = (pagina*20)+20
+    getPokemonList(inicio,fin);
+    setPagina(incremento)
+    console.log('next' ,  incremento);
+  }
+
+  const previous = async () => {
+    let decremento = pagina -1;
+    let inicio = (decremento*20)-19
+    let fin = (decremento*20);
+    if(inicio > 0){
+      getPokemonList(inicio,fin);
+      setPagina(decremento)
+      console.log('previous' , decremento);
+    }
+  }
+
   const handleUpdate = (id) => {
     const pokemonSeleccionadoEstado = pokemonEstado.filter((pokemon) => pokemon.id === id);
     setPokemonSeleccionadoEstado(pokemonSeleccionadoEstado);
@@ -50,9 +68,9 @@ function App() {
       console.log(error);
     }
   }
-
+  
   useEffect(() => {
-    getPokemonList();
+    getPokemonList(1,20);
   }, []);
   return (
     <div className="App">
@@ -85,6 +103,11 @@ function App() {
               />
             ))}
           </Row>
+          <Pagination
+            next={next}
+            previous={previous}
+            pagina={pagina}
+          />
         </>
       )}
       </header>
